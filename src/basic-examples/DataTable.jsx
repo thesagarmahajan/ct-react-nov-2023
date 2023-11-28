@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import UserRow from "./UserRow"
 
 function DataTable() {
 
@@ -32,6 +33,7 @@ function DataTable() {
 
     return (
         <>
+            <h1>Active Users</h1>
             <table border={1}>
                 <thead>
                     <tr>
@@ -47,18 +49,8 @@ function DataTable() {
                     {
                         users.map((currentUser)=>{
                             return (
-                                <tr>
-                                    <td>{currentUser.id}</td>
-                                    <td>{currentUser.first_name}</td>
-                                    <td>{currentUser.last_name}</td>
-                                    <td>{currentUser.email}</td>
-                                    <td>
-                                        <img src={currentUser.avatar} />
-                                    </td>
-                                    <td>
-                                        <button onClick={()=>deleteUser(currentUser.id)}>DELETE</button>
-                                    </td>
-                                </tr>
+                               <UserRow id={currentUser.id} first_name={currentUser.first_name} last_name={currentUser.last_name} email={currentUser.email} avatar={currentUser.avatar} deleteUser={deleteUser} />
+
                             )
                         })
                     }

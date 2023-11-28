@@ -16,7 +16,19 @@ function SignupForm(){
 
     let handleSubmit = (e) => {
         e.preventDefault()
-        console.log(formData)
+        let fetchPromise = fetch("http://localhost:3001/users", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(formData)
+        })
+        // 200-299
+        fetchPromise.then(res=>alert("Data Insterted Successfully"))
+        fetchPromise.catch(err=>{
+            alert("Some Error")
+            console.log(err)
+        })
     }
 
     return (
