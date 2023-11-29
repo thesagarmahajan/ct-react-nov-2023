@@ -7,10 +7,22 @@
       "password": "123123"
     },
     {
-      "name": "someone else",
+      "name": "someone else 2",
       "email": "someone.else@gmail.com",
       "password": "123123",
       "id": 2
+    },
+    {
+      "name": "someone new",
+      "email": "someone.new@gmail.com",
+      "password": "123123",
+      "id": 3
+    },
+    {
+      "name": "someone middle different",
+      "email": "someone.different@gmail.com",
+      "password": "123123",
+      "id": 4
     }
   ]
 }

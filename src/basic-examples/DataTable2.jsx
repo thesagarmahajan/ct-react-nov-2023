@@ -1,10 +1,11 @@
 import { useEffect, useState, useTransition } from "react"
 import UserRow from "./UserRow"
+import { Table, Button, Modal, Form } from "react-bootstrap"
 
 function DataTable2() {
 
     let [users, setUsers] = useState([])  
-    let [updatFormVisible, setUpdateFormVisible] = useState("hidden")
+    let [modalVisibility, setModalVisibility] = useState(false)
     let [userToUpdate, setUserToUpdate] = useState({
         id:0,
         name:"",
@@ -33,13 +34,11 @@ function DataTable2() {
     }
 
     let handleUpdateClick = (tempUser) => {
+        setModalVisibility(true)
         setUserToUpdate(tempUser)
-        setUpdateFormVisible("visible")
     }
 
-
-    // Hook
-    useEffect(()=>{
+    let getUsersData = () => {
         let fetchPromise = fetch("http://localhost:3001/users")
         fetchPromise.then((res)=>res.json()).then(resdata=>{
              setUsers(resdata)
@@ -49,6 +48,11 @@ function DataTable2() {
         fetchPromise.catch(()=>{
             console.log("Some error occured")
         })
+    }
+
+    // Hook
+    useEffect(()=>{
+        getUsersData();   
     }, [])
 
     let handleUpdateFormChange = (e) => {
@@ -63,12 +67,27 @@ function DataTable2() {
                 "Content-Type":"application/json"
             },
             body: JSON.stringify(userToUpdate)
-        }).then(res=>alert("Updated"))
+        }).then(res=>{
+            setModalVisibility(false);
+            // getUsersData();
+
+            let updatedUsers = users.map(currentUser=>{
+                if(currentUser.id==userToUpdate.id){
+                    currentUser = userToUpdate
+                    return currentUser
+                }
+                return currentUser
+            })
+            
+            setUsers(updatedUsers)
+            alert("Updated")
+        })
     }
 
     return (
         <>
-            <table border={1}>
+            <h1>Users List</h1>
+            <Table border={1}>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -86,8 +105,8 @@ function DataTable2() {
                                 <td>{currentUser.name}</td>
                                 <td>{currentUser.email}</td>
                                 <td>
-                                    <button type="button" onClick={()=>handleUpdateClick(currentUser)}>Update</button>
-                                    <button type="button" onClick={()=>deleteUser(currentUser.id)}>Delete</button></td>
+                                    <Button type="button"  onClick={()=>handleUpdateClick(currentUser)}>Update</Button>
+                                    <Button type="button" variant="danger"  onClick={()=>deleteUser(currentUser.id)}>Delete</Button></td>
                                 
                                </tr>
                             )
@@ -95,23 +114,31 @@ function DataTable2() {
                     }
                     
                 </tbody>
-            </table>
+            </Table>
 
-            <form onSubmit={handleUpdateFormSubmit} style={{visibility:updatFormVisible}}>
-                <h1>Update Form</h1>
-                <button onClick={()=>setUpdateFormVisible("hidden")}>X</button>
-                <br /><br />
-                <label htmlFor="name">Name:</label>
-                <input type="text" id="name" name="name" value={userToUpdate.name} onChange={handleUpdateFormChange} />
-                <br /><br />
-                <label htmlFor="email">Email:</label>
-                <input type="email" id="email" name="email" value={userToUpdate.email} onChange={handleUpdateFormChange}/>
-                <br /><br />
-                <label htmlFor="password">Password:</label>
-                <input type="text" id="password" name="password" value={userToUpdate.password} onChange={handleUpdateFormChange} required/>
-                <br /><br />
-                <button type="submit">SUBMIT</button>
-            </form>
+            <Modal show={modalVisibility} onHide={()=>setModalVisibility(false)}>
+                <Modal.Header closeButton>
+                <Modal.Title>Update Form</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleUpdateFormSubmit}>
+                        <Form.Group>
+                            <Form.Label htmlFor="name">Name:</Form.Label>
+                            <Form.Control type="text" id="name" name="name" value={userToUpdate.name} onChange={handleUpdateFormChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="email">Email:</Form.Label>
+                            <Form.Control type="email" id="email" name="email" value={userToUpdate.email} onChange={handleUpdateFormChange}/>
+                        </Form.Group>
+                        <Form.Group>
+                        <Form.Label htmlFor="password">Password:</Form.Label>
+                        <Form.Control type="text" id="password" name="password" value={userToUpdate.password} onChange={handleUpdateFormChange} required/>
+                        </Form.Group>
+                        <Button variant="primary" type="submit">SUBMIT</Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+            
         </>
     )
 }
