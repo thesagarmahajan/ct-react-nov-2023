@@ -4,11 +4,11 @@ import DataTable2 from "./basic-examples/DataTable2";
 import SignupForm from "./basic-examples/SingupForm";
 import "bootstrap/dist/css/bootstrap.css"
 import Navigation from "./basic-examples/Navigation";
-
+import CounterExample from "./use-reducer-examples/CounterExample";
 let routeConfiguration = createBrowserRouter([
   {
     path:"/",
-    element:<Navigation />,
+    element:<CounterExample />,
     children: [
       {
         path:"/",
