@@ -5,10 +5,11 @@ import SignupForm from "./basic-examples/SingupForm";
 import "bootstrap/dist/css/bootstrap.css"
 import Navigation from "./basic-examples/Navigation";
 import CounterExample from "./use-reducer-examples/CounterExample";
+import UserOperations from "./use-reducer-examples/UserOperations";
 let routeConfiguration = createBrowserRouter([
   {
     path:"/",
-    element:<CounterExample />,
+    element:<UserOperations />,
     children: [
       {
         path:"/",

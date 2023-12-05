@@ -1,6 +1,6 @@
 import { useReducer } from "react";
-import { counterActions } from "./counterActions";
-import { counterReducer } from "./counterReducer";
+import { counterActions } from "./actions";
+import { counterReducer } from "./reducers";
 
 
 function CounterExample(){
